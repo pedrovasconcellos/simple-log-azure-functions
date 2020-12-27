@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using SimpleLog.HttpTrigger.Entities;
 using SimpleLog.HttpTrigger.Services;
 using SimpleLog.HttpTrigger.ViewModels;
+using System.Net;
 
 namespace SimpleLog.HttpTrigger
 {
@@ -32,7 +33,10 @@ namespace SimpleLog.HttpTrigger
             if (!toSaveMSSQL && !toSaveMongoDB)
             {         
                 log.LogError(_errorMessageConnectionString);
-                return new UnprocessableEntityObjectResult(_errorMessageConnectionString);      
+                return new ObjectResult(new { Error = _errorMessageConnectionString }) 
+                { 
+                    StatusCode = (int)HttpStatusCode.InternalServerError 
+                };
             }
 
             string requestBody = await new StreamReader(request.Body).ReadToEndAsync();
@@ -83,7 +87,7 @@ namespace SimpleLog.HttpTrigger
             else
                 return new UnprocessableEntityObjectResult(new
                     { 
-                        Message = $"The object could not be saved to the database."
+                        Error = $"The object could not be saved to the database."
                     });
         }
 
