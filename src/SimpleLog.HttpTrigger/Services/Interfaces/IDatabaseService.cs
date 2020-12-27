@@ -6,6 +6,6 @@ namespace SimpleLog.HttpTrigger.Services.Interfaces
 {
     public interface IDatabaseService
     {
-        Task<bool> Save(ILogger log, SimpleLogEntity entity);
+        Task<bool> SaveAsync(ILogger log, SimpleLogEntity entity);
     }
 }

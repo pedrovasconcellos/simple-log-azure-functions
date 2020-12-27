@@ -16,7 +16,7 @@ namespace SimpleLog.HttpTrigger.Services
             this._connectionString = connectionString;
         }
 
-        public async Task<bool> Save(ILogger log, SimpleLogEntity entity)
+        public async Task<bool> SaveAsync(ILogger log, SimpleLogEntity entity)
         {
             var sql = "INSERT INTO SimpleLog (Id, AppName, Description, Json, Created) VALUES (@Id, @AppName, @Description, @Json, @Created)";
 
@@ -30,8 +30,8 @@ namespace SimpleLog.HttpTrigger.Services
                 command.Parameters.AddWithValue("@Description", entity.Description);
                 command.Parameters.AddWithValue("@Json", entity.Json);
                 command.Parameters.AddWithValue("@Created", entity.Created);
-                connection.Open();
-
+                
+                await connection.OpenAsync();
                 return await command.ExecuteNonQueryAsync() > 0;
             }
             catch (Exception ex)

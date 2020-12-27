@@ -44,14 +44,30 @@ namespace SimpleLog.HttpTrigger
 
             var mssql = new MSSQLService(connectionStringMSSQL);
             var mongoDB = new MongoDBService(connectionStringMongoDB);
+
+            if (!(request.Headers["X-Sync-Request"].ToString() == "true"))  
+            {
+                if(toSaveMSSQL)
+                    _ = mssql.SaveAsync(log, entity);
+                
+                if(toSaveMongoDB)
+                    _ =  mongoDB.SaveAsync(log, entity);
+
+                return new CreatedResult(
+                    GetResourceUrl(request, entity.Id), new 
+                    { 
+                        Message = "Event sent.",
+                        ResourceId = entity.Id
+                    });
+            }
             
             var savedMSSQL = false;
             if(toSaveMSSQL)
-                savedMSSQL = await mssql.Save(log, entity);
+                savedMSSQL = await mssql.SaveAsync(log, entity);
             
             var savedMongoDB = false;
             if(toSaveMongoDB)
-                savedMongoDB = await mongoDB.Save(log, entity);
+                savedMongoDB = await mongoDB.SaveAsync(log, entity);
             
             var conditionBoth = ((toSaveMSSQL && savedMSSQL) && (toSaveMongoDB && savedMongoDB));
             var conditionMSQSQL = !toSaveMongoDB && (toSaveMSSQL && savedMSSQL);
@@ -59,11 +75,16 @@ namespace SimpleLog.HttpTrigger
 
             if (conditionBoth || conditionMSQSQL || conditionMongoDB)
                 return new CreatedResult(
-                    GetResourceUrl(request, entity.Id), 
-                    $"The object was saved in the database. Id={entity.Id};");
+                    GetResourceUrl(request, entity.Id), new 
+                    { 
+                        Message = "The object was saved in the database.",
+                        ResourceId = entity.Id
+                    });
             else
-                return new UnprocessableEntityObjectResult(
-                    $"The object could not be saved to the database.");
+                return new UnprocessableEntityObjectResult(new
+                    { 
+                        Message = $"The object could not be saved to the database."
+                    });
         }
 
         private static string GetResourceUrl(HttpRequest request, Guid id)

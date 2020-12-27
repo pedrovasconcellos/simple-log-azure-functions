@@ -25,11 +25,11 @@ namespace SimpleLog.HttpTrigger.Services
             }
         }
 
-        public async Task<bool> Save(ILogger log, SimpleLogEntity entity)
+        public async Task<bool> SaveAsync(ILogger log, SimpleLogEntity entity)
         {
             try
             {      
-                var database = GetMongoDatabase();
+                var database = this.GetMongoDatabase();
                 var collection = database
                     .GetCollection<SimpleLogEntity>(typeof(SimpleLogEntity).Name);
                 
