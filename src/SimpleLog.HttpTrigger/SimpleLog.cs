@@ -16,8 +16,6 @@ namespace SimpleLog.HttpTrigger
 {
     public static class SimpleLog
     {
-        const string _errorMessageConnectionString = "the connection string is empty.";
-
         [FunctionName("SimpleLog")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest request,
@@ -31,9 +29,10 @@ namespace SimpleLog.HttpTrigger
             var toSaveMSSQL = !string.IsNullOrEmpty(connectionStringMSSQL);
             var toSaveMongoDB = !string.IsNullOrEmpty(connectionStringMongoDB);
             if (!toSaveMSSQL && !toSaveMongoDB)
-            {         
-                log.LogError(_errorMessageConnectionString);
-                return new ObjectResult(new { Error = _errorMessageConnectionString }) 
+            {
+                var errorMessageConnectionString = "the connection string is empty.";         
+                log.LogError(errorMessageConnectionString);
+                return new ObjectResult(new { Error = errorMessageConnectionString }) 
                 { 
                     StatusCode = (int)HttpStatusCode.InternalServerError 
                 };
