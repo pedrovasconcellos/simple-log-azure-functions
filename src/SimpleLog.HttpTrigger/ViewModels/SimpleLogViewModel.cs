@@ -1,5 +1,5 @@
 ﻿
-namespace SimpleLog.HttpTrigger
+namespace SimpleLog.HttpTrigger.ViewModels
 {
     public class SimpleLogViewModel
     {
