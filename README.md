@@ -60,7 +60,7 @@ $  docker run --name MongoDB -p 17017:27017 -d mongo
 Create Environment Variable
 ````
 Name = ConnectionStringMSQSQL.SimpleLog.HttpTrigger
-Value = mongodb://localhost:17017/EmailForm
+Value = Server=localhost;Database=SimpleLog;MultipleActiveResultSets=true;User Id=sa;Password=MyPassword7
 
 Name = ConnectionStringMongoDB.SimpleLog.HttpTrigger
 Value = mongodb://localhost:17017/EmailForm
