@@ -36,19 +36,34 @@ To stop debugging, use Ctrl-C in the terminal.
 Deploy your code to Azure
 To publish your Functions project into Azure, enter the following command:
 ````
-$ cd src
+$ cd src/SimpleLog.HttpTrigger
 ````
 ````
 $ az login
 ````
 ````
-$ func azure functionapp publish SimpleLog.HttpTrigger --csharp
+$ func azure functionapp publish SimpleLog --csharp
 ````
 
 
 Install MSSQL (SqlServer) to test inside LocalHost
 ````
 $ docker run --name sqlserver -i -e ACCEPT_EULA=Y -e SA_PASSWORD=MyPassword7 -p 1433:1433 -d mcr.microsoft.com/mssql/server:latest
+````
+
+Install Docker MongoDB to test inside LocalHost (Note: use port 17017 to connect to the bank)
+````
+$  docker run --name MongoDB -p 17017:27017 -d mongo
+````
+
+
+Create Environment Variable
+````
+Name = ConnectionStringMSQSQL.SimpleLog.HttpTrigger
+Value = mongodb://localhost:17017/EmailForm
+
+Name = ConnectionStringMongoDB.SimpleLog.HttpTrigger
+Value = mongodb://localhost:17017/EmailForm
 ````
 
 ## Sponsor
