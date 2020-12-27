@@ -45,25 +45,46 @@ $ az login
 $ func azure functionapp publish SimpleLog --csharp
 ````
 
+### Note: There are two types of databases that this project can use [MSSQL, MongoDB]
 
+
+#### MSSQL
 Install MSSQL (SqlServer) to test inside LocalHost
 ````
 $ docker run --name sqlserver -i -e ACCEPT_EULA=Y -e SA_PASSWORD=MyPassword7 -p 1433:1433 -d mcr.microsoft.com/mssql/server:latest
 ````
 
+Execute
+````sql
+CREATE DATABASE SimpleLog
+GO
+USE SimpleLog
+GO
+CREATE TABLE SimpleLog (
+	Id uniqueidentifier PRIMARY KEY,
+	AppName VARCHAR(150) NOT NULL,
+	Description TEXT NOT NULL,
+	Json TEXT NOT NULL,
+	Created DATETIME NOT NULL
+)
+````
+
+Create Environment Variable MSSQL
+````
+Name = ConnectionStringMSQSQL.SimpleLog.HttpTrigger
+Value = Server=localhost;Database=SimpleLog;MultipleActiveResultSets=true;User Id=sa;Password=MyPassword7
+````
+
+#### MongoDB
 Install Docker MongoDB to test inside LocalHost (Note: use port 17017 to connect to the bank)
 ````
 $  docker run --name MongoDB -p 17017:27017 -d mongo
 ````
 
-
-Create Environment Variable
+Create Environment Variable MongoDB
 ````
-Name = ConnectionStringMSQSQL.SimpleLog.HttpTrigger
-Value = Server=localhost;Database=SimpleLog;MultipleActiveResultSets=true;User Id=sa;Password=MyPassword7
-
 Name = ConnectionStringMongoDB.SimpleLog.HttpTrigger
-Value = mongodb://localhost:17017/EmailForm
+Value = mongodb://localhost:17017/SimpleLog
 ````
 
 ## Sponsor
