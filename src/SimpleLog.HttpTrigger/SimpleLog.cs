@@ -41,7 +41,7 @@ namespace SimpleLog.HttpTrigger
             string requestBody = await new StreamReader(request.Body).ReadToEndAsync();
             var viewModel = JsonConvert.DeserializeObject<SimpleLogViewModel>(requestBody);
 
-            var entity = new SimpleLogEntity(viewModel.OurClientId, viewModel.ApplicationId, viewModel.ApplicationName, viewModel.Description, viewModel.Json);
+            var entity = new SimpleLogEntity(viewModel.OurClientId, viewModel.ApplicationId, viewModel.LogLevel, viewModel.Description, viewModel.Json);
             if (entity.HasNotification())
                 return new BadRequestObjectResult(entity.GetNotification());
 
