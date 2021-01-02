@@ -18,7 +18,7 @@ namespace SimpleLog.HttpTrigger.Services
 
         public async Task<bool> SaveAsync(ILogger log, SimpleLogEntity entity)
         {
-            var sql = "INSERT INTO SimpleLog (Id, AppName, Description, Json, Created) VALUES (@Id, @AppName, @Description, @Json, @Created)";
+            var sql = "INSERT INTO SimpleLog (Id, OurClientId, ApplicationId, ApplicationName, Description, Json, Created) VALUES (@Id, @OurClientId, @ApplicationId, @ApplicationName, @Description, @Json, @Created)";
 
             try
             {
@@ -26,7 +26,9 @@ namespace SimpleLog.HttpTrigger.Services
                 using SqlCommand command = new SqlCommand(sql, connection);
 
                 command.Parameters.AddWithValue("@Id", entity.Id);
-                command.Parameters.AddWithValue("@AppName", entity.AppName);
+                command.Parameters.AddWithValue("@OurClientId", entity.OurClientId);
+                command.Parameters.AddWithValue("@ApplicationId", entity.ApplicationId);
+                command.Parameters.AddWithValue("@ApplicationName", entity.ApplicationName);
                 command.Parameters.AddWithValue("@Description", entity.Description);
                 command.Parameters.AddWithValue("@Json", entity.Json);
                 command.Parameters.AddWithValue("@Created", entity.Created);
