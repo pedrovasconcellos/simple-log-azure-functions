@@ -20,8 +20,8 @@ namespace SimpleLog.HttpTrigger.Entities
             if (!Enum.IsDefined(typeof(LogLevel), logLevel))
                 this.Notifications.Add(nameof(logLevel), $"the {nameof(this.LogLevel)} invalid. {nameof(this.LogLevel)} available [Trace=0, Debug=1, Information=2, Warning=3, Error=4, Critical=5, None=6]");
 
-            if (string.IsNullOrEmpty(description) || description.Length < 5)
-                this.Notifications.Add(nameof(this.Description), $"the {nameof(this.Description)} field cannot be null, the field must contain more than 5 characters.");
+            if (string.IsNullOrEmpty(description) || description.Length < 5 || description.Length > 80)
+                this.Notifications.Add(nameof(this.Description), $"the {nameof(this.Description)} field cannot be null, the field must contain more than 5 characters and less than 81 characters.");
 
             if (string.IsNullOrEmpty(json) || json.Length < 5)
                 this.Notifications.Add(nameof(this.Json), $"the {nameof(this.Json)} field cannot be null, the field must contain more than 5 characters.");
