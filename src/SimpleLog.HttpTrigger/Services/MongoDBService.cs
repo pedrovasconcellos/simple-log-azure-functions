@@ -12,17 +12,11 @@ namespace SimpleLog.HttpTrigger.Services
 {
     public class MongoDBService : IDatabaseService
     {
-        private static bool bsonWasConfigured = false;
         private readonly string _connectionString;
 
         public MongoDBService(string connectionString)
         {
             this._connectionString = connectionString;
-            if(!bsonWasConfigured)
-            {
-                BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-                bsonWasConfigured = true;
-            }
         }
 
         public async Task<bool> SaveAsync(ILogger log, SimpleLogEntity entity)
